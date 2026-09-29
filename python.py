@@ -86,3 +86,135 @@ def heap(array):
     return [heapq.heapify(h) for _ in range(len(h))]
 
 # time sort = merge + insertion 
+
+
+
+
+# Паттерны на масивах и строках
+
+# 1 - бинарный поиск 
+# массив уже отсортирован или ответ число и при увлеличении кандитата условия из нет становится да
+# наивный перебор O(n) а половинками O(logn)
+# Каждый шаг смотрим на середину и выкидываем половину
+# базовый поиск и левая вставка
+
+
+# нужен когда массив уже отсортирован и ответ число и при увеличении каднтита условия из мало становитяс хватит
+# каждый шаг выкидываем половину время по O(log n), O(n)
+# когда брать - найтич исло, первую последную позицию, корень 
+# минимальная скорость при которой успеем что-то 
+# когда не брать - массив не отсортирован или сортировать дорого тогда словарь или линейный подход 
+
+def binary_search(array, target):
+    left = 0
+    right = len(array) - 1 
+    while left <= right:
+        mid  = (left + right) // 2
+
+        if array[mid] == target :
+            return mid
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+        return -1 # если элемента нет left - индекс куда его нужно ставить 
+    
+# левая граница (первое вхождение или место вставки)
+
+def lower_bound(array, target):
+    left = 0
+    right = len(array) - 1 
+    while left <= right:
+        mid  = (left + right) // 2
+
+        if array[mid] == target :
+            return mid
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+        return left 
+    
+
+# два указателя
+# два индекса. поиск идет либо с концов на встречу, либо оба слева на право. смысл поска - убрать вложенный цикл 
+
+# пара с суммой на отсортированном массиве 
+# сумма маленькая двигаем влево, большая - вправо 
+# каждый массив один раз проходит O(n) после сортировки 
+
+# когда брать - пара или тройка которую нужно найти одновременно, палиндром/контейнер с водой/ слить два отсортированных / убрать дубилкаты 
+# если массив не отсоритрованный sort либо словарь 
+
+def two_sum_sorted(array, target):
+    left = 0
+    right = len(array) - 1 
+
+    while left < right: 
+        sum = array[left] + array[right]
+        if sum == target:
+            return [left, right]
+        if sum < target:
+            left += 1
+        else: 
+            right += 1
+
+# 3sum - сортировка для каждого i два указателя на кхвосте 
+# дубликаты пропускаем иначе один и тот же триплет вылетет много раз 
+# и того O(n²) и это оптимально для каждой задачи в общем случае 
+
+def three_sum(array):
+    array.sort()
+    result = []
+    for first in range(len(array)):
+        if first > 0 and array[first] == array[first-1]:
+            continue
+        left = first + 1
+        right = len(array) - 1 
+        while left < right:
+            sum = array[first] + array[right] + array[left]
+
+            if sum == 0:
+                result.append(array[first] + array[left] + array[right])
+                left +=1
+                while left < right and array[left] == array[left - 1]:
+                    left +=1
+            elif sum < 0:
+                left += 1
+            else: 
+                right +=1
+    return result
+
+
+# хеш таблица 
+# нужна когда важен непорядок а 
+# - уже видел ? dict и set 
+# сколько раз ? dict как счетчик
+# если дополения до суммы ?  two sum для неостроитрованного массива
+# среденее O(1) на проверку 
+# dict и set и частота O(1) это главный способ превратить O(n²) когда порядок не важен
+
+# когда брать - two sum без сортирови, дубликаты, анограмы, частоты подмассив с суммой
+# когда не брать - нужен порядок или неприрывный кусок с ограничениями это окно 
+def two_sum(array, target):
+    # значение -> индекс где мы его уже встречали
+    index_by_value = {}
+    for index, value in enumerate(array):
+        # какое число должно стоять раньше
+        need = target - value
+        if need in index_by_value:
+            return index_by_value[need], index
+        # кладем текующее после проверки иначе value + value взял элемент дважды 
+        index_by_value[need] = index 
+
+# групировка анограм одно и тоже слово после сортировки слов дает один ключ
+def group_anagrams(array):
+    group = {}
+    for word in array:
+        # анаграммовые одинаковые ключи (eat и tea  -> (e,a,) -> одинаковый ключ)
+        key = tuple(sorted(word))
+        # список в ключ словаре нельзя, а кортеж можно он хешируется
+        group.setdefault(key, []).append(word)
+    return list(group.values())
+
+# подмассив с сумой таргет. окно ломется на отрицательных числах префикс + словаря 
