@@ -253,3 +253,194 @@ words = ["cat", "biba", "aboba"]
 
 # two sum префиксов нет - там ключ - само по себе число
 # префикс появляется только когда спрашивают сумму непреривного куска 
+
+# бинарка
+# проверка есть ли число
+numbers_task_1 = [1,4,8,3,7,11,25,40] 
+target_task_1  = 7 
+# провериь что есть таргет в массиве. вернуть индекс или -1 
+# проверка первого вхождения 
+numbers = [1,2,2,2,2,4,6]
+target = 2 
+# проверить самый левый индек где стоит 2 
+# куда встаивть 
+numbers = [30,20,10,40]
+target = 25 
+# числа нету, индекс вернуть куда его вставить чтобы ммассив стал отсоритрованным 
+
+
+# Два указателя
+# Пара с суммой 
+numbers = [1,2,4,7,11]
+target = 11
+#Массив уже отсортирован верни два индекса ( любой порядок)
+# Палиндром
+text = "привет"
+textp = "шалаш"
+taxtw = "Нажал кабан на баклажан"
+# Вернуть True false
+# Слить два отсортированных массива 
+left = [1,4,7] 
+right = [2,3,5,8]
+# два указателя как в merge верни один отсортированный список
+
+
+
+# Хэш
+# Two sum без сортировки 
+numbers = [3,1,4,2] 
+target = 6
+# Верни два индекса не сортируй иначе индексы поедут
+# Првоерка на дубликаты
+numbers = [5,1,3,1]
+numbers = [5,1,3]
+# Верни True если какоето число уже встречалось дважды
+# Анаграммы 
+
+
+
+
+
+# бинарка 1 задание
+numbers_task_1 = [1,4,8,3,7,11,25,40] 
+target_task_1  = 7 
+
+def binary_search(array, target):
+    array.sort()
+    left = 0
+    right = len(array) - 1 
+    while left <= right:
+        mid  = (left + right) // 2
+
+        if array[mid] == target :
+            return mid
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+        return -1
+
+result_task_1 = binary_search(numbers_task_1, target_task_1)
+print(result_task_1)
+
+
+
+# задание 2
+numbers = [1,2,2,2,2,4,6]
+target = 2 
+
+def binary_search(array, target):
+    array.sort()
+    left = 0
+    right = len(array) - 1 
+    while left < right:
+        mid  = (left + right) // 2
+
+        if array[mid] < target :
+            right = mid + 1
+        else:
+            right = mid 
+    return left
+    
+result_task_1 = binary_search(numbers, target)
+print(result_task_1)
+
+
+# задание 3 
+numbers = [30,20,10,40]
+target = 25 
+
+def binary_search(array, target):
+    array.sort()
+    print(array)
+    left = 0
+    right = len(array) - 1 
+
+    while left <= right:
+        mid  = (left + right) // 2
+
+        if array[mid] == target :
+            right = mid - 1
+        if array[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return left
+
+result_task_1 = binary_search(numbers, target)
+print(result_task_1)
+
+
+# задание 4 
+# Пара с суммой 
+numbers = [1,2,4,7,11]
+target = 11
+#Массив уже отсортирован верни два индекса ( любой порядок)
+
+def two_sum_sorted(array, target):
+    print(array)
+    left = 0
+    right = len(array) - 1 
+
+    while left < right: 
+        sum = array[left] + array[right]
+        if sum == target:
+            return [left, right]
+        if sum < target:
+            left += 1
+        else: 
+            right -= 1
+    return -1
+
+result_task_1 = two_sum_sorted(numbers, target)
+print(result_task_1)
+
+
+# задание 5
+# Палиндром
+text = "привет"
+textp = "шалаш"
+textw = "Нажал кабан на баклажан"
+# Вернуть True false
+
+def palindrome(text):
+    text = text.lower().replace(" ", "")
+    left = 0
+    right = len(text) - 1
+    while left < right:
+        if text[left] != text[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+print(palindrome(text))
+print(palindrome(textp))
+print(palindrome(textw))
+
+# задание 6 
+# Слить два отсортированных массива 
+left = [1,4,7] 
+right = [2,3,5,8]
+# два указателя как в merge верни один отсортированный список
+
+def merge_array(arrayleft, arrayright):
+    resultarray = []
+    left = 0
+    right = 0
+
+    while left < len(arrayleft) and right < len(arrayright):
+        if arrayleft[left] <= arrayright[right]:
+            resultarray.append(arrayleft[left])
+            left += 1
+        else: 
+            resultarray.append(arrayright[right])
+            right += 1
+    while left < len(arrayright): 
+        resultarray.append(arrayright[right])
+        right += 1
+
+    while right < len(arrayleft):
+        resultarray.append(arrayleft[arrayleft])
+        left += 1
+    return resultarray
