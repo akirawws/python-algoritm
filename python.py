@@ -680,3 +680,44 @@ def reverse_list(head):
 
 # также аню борю и вику положили в стек и сняли всех в каком порякдке выйдут 
 # чем отличаются от очереди 
+
+from collections import deque
+queue = deque()
+queue.append("Анна")
+queue.append("Боря")
+queue.append("Вика")
+first = queue.popleft() # анна 
+# остались боря вика
+# deque.append и deque.popleft - O(1)
+# list.pop() не очередь каждый вызов
+# сдвигает все оставшиеяся O(n)
+# тысяча таких вызовов уже квадат
+
+array = ["Анна", "Боба", "Вика"]
+
+# очередь обхода по уровням 
+
+
+from collections import deque
+queue = deque()
+queue.append("Анна")
+queue.append("Боря")
+queue.append("Вика")
+first = queue.popleft() # анна 
+second = queue.popleft() # боря
+third = queue.popleft() # викай
+
+print("Первый: ", first)
+print("Второй: ", second)
+print("Третий: ", third)
+
+stack = []
+stack.append("анна")
+stack.append("боря")
+stack.append("вика")
+
+out_1 = stack.pop()
+out_2 = stack.pop()
+out_3 = stack.pop()
+
+print("стек - ", out_1,out_2,out_3)
