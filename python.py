@@ -721,3 +721,106 @@ out_2 = stack.pop()
 out_3 = stack.pop()
 
 print("стек - ", out_1,out_2,out_3)
+
+
+# узел 
+# Узел + левый + правый. Рекурсия задача на узле = дети + сам узел. 
+#     4
+#    / \
+#   2   6
+#  / \  
+# 1   3
+
+# Древо - узлы со сыллками у узла есть значение левый ребонок и правый ребенок 
+# у листа оба ребенка пустые 
+# узел 4 - корень 2 и 6 его дети. 
+
+# Обход - это порядок в котором заходишь в узлы 
+# Их три классических и все 3 один и тот же каркас, сначало левое поддрево, потом правое 
+# меняется только записываешь само значение 
+
+#      8 
+#     / \
+#    3  10
+#   / \   \ 
+#   1  6   14
+#      / \   
+#     4   7
+
+# обход     когда пишешь значение   пример 
+# preorder  до детей
+# inorder   между детьми            1,3,4,6,7,8,10,14
+# postorder после детей
+
+# inorder сначала все левое потом я(центр) потом все вправое 
+
+def inorder(node,result):
+    if node is None:
+        return
+    inorder(node.left, result)
+    result.append(node.value)
+    inorder(node.right, result)
+
+# вызов inorder (Корень, [array])
+
+# почему получается - 1,3,4,6,7,8,10,14
+# начинается все с рекурсии на 8, не пишет 8 сразу а сначала циклом обходил левое поддерево 3, потом возвращается к корню и сверху вниз идет по правой части 
+# глубина стека - высота дерева y балансированного это O(log n)
+# у палки влева O(n)
+
+# BST Что это и зачем 
+# - Бинарное древо поиска. Правило каждого узла 
+# все в левом поддерево меньше узла всегда
+# все в правом больше
+# тоже правило работает в каждом поддереве 
+
+# Древо выше - BST 
+# зачем это нужно - поиск вставка удаление всреднем O(nlog n) как бинарный пиоск только по сыллкам а не по индексам
+# на палке выроженно древо 1 → 2 → 3 → 4 это уже поик O(n)
+
+# У 5 правый 15 больше 15, это окей. но 15 в левом  поддрево 10 и 15 > 10 это не BST
+
+
+def bst(node,lower,upper):
+    if node is None:
+        return True
+    if node.value <= lower or node.value >= upper:
+        return False 
+    return (
+        bst(node.left, lower, node.value)
+        and bst(node.right, node.value , upper)
+    )
+
+def height(node):
+    if node is None:
+        return 0 # высота пустого 0
+    left_height = height(node.left)
+    right_height = height(node.right)
+    return 1 + max(left_height, right_height)
+# 1 - сам узел + самое глубокое поддрево 
+
+# по уровням - не рекурсии а очередь слой за слоем 
+# как круги на воде 
+
+from collections import deque 
+def level_order(root):
+    if root is None:
+        return []
+    result = []
+    queue = deque([root])
+    while queue:
+        # сколько узлов на этом уровне 
+        level_size = len(queue)
+        level_value = []
+        for i in range(level_size):
+            node=  queue.popleft()
+            level_value.append(node.value)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        result.append(level_value)
+    return result
+
+# куча - приоритетная очердеь достать минимум элемент 
+
